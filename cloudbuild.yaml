@@ -13,36 +13,32 @@ steps:
   - id: 'tf init'
     name: 'hashicorp/terraform:1.0.0'
     args:
-    - sh
-    - '-c'
-    - |
-        cd gcp-devops && terraform init
+    - 'init'
 
   - id: 'tf plan'
     name: 'hashicorp/terraform:1.0.0'
     args:
-    - sh
-    - '-c'
-    - |
-        terraform plan
+    - plan
 
   - id: 'tf apply'
     name: 'hashicorp/terraform:1.0.0'
     args:
-    - sh
-    - '-c'
-    - |
-        if [[ -z "$BRANCH_NAME" ]]; then
-          echo "Error: BRANCH_NAME is not defined."
-          exit 1
-        fi
+    - 'apply'
+    - '--auto-approve'
 
-        if [[ "$BRANCH_NAME" == "feature/docs" ]]; then
-          echo "Branch is 'feature/docs', proceeding with terraform apply."
-          terraform apply --auto-approve
-        else
-          echo "Branch is not 'feature/docs', skipping terraform apply."
-        fi
+    ##
+    #    if [[ -z "$BRANCH_NAME" ]]; then
+    #      echo "Error: BRANCH_NAME is not defined."
+    #      exit 1
+    #    fi
+
+    #    if [[ "$BRANCH_NAME" == "feature/docs" ]]; then
+    #      echo "Branch is 'feature/docs', proceeding with terraform apply."
+    #      terraform apply --auto-approve
+    #    else
+    #      echo "Branch is not 'feature/docs', skipping terraform apply."
+    #   fi
+    #
 
 options:
   logging: CLOUD_LOGGING_ONLY
