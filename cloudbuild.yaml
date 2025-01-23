@@ -11,7 +11,7 @@ steps:
         echo "Branch name is: $BRANCH_NAME"
 
   - id: 'tf init'
-    name: 'hashicorp/terraform:1.9.0'
+    name: 'hashicorp/terraform:1.0.0'
     args:
     - sh
     - '-c'
@@ -19,7 +19,7 @@ steps:
         terraform init
 
   - id: 'tf plan'
-    name: 'hashicorp/terraform:1.9.0'
+    name: 'hashicorp/terraform:1.0.0'
     args:
     - sh
     - '-c'
@@ -27,7 +27,7 @@ steps:
         terraform plan
 
   - id: 'tf apply'
-    name: 'hashicorp/terraform:1.9.0'
+    name: 'hashicorp/terraform:1.0.0'
     args:
     - sh
     - '-c'
