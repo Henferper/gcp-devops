@@ -43,3 +43,6 @@ steps:
         else
           echo "Branch is not 'feature/docs', skipping terraform apply."
         fi
+
+options:
+  logging: CLOUD_LOGGING_ONLY
