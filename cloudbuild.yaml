@@ -16,7 +16,7 @@ steps:
     - sh
     - '-c'
     - |
-        terraform init
+        cd gcp-devops && terraform init
 
   - id: 'tf plan'
     name: 'hashicorp/terraform:1.0.0'
