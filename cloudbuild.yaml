@@ -45,7 +45,7 @@ steps:
           git merge "$BRANCH_NAME" --no-ff -m "Auto-merge from $BRANCH_NAME to develop"
           git push origin develop
         else
-          echo "Branch is not 'feature/docs', skipping auto-merge."
+          echo "Branch is not 'feature/cloudbuild', skipping auto-merge."
         fi
 
 options:
