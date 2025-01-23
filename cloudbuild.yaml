@@ -1,7 +1,8 @@
 substitutions:
-  _BRANCH_NAME: 'feature/docs'
+  _BRANCH_NAME: 'feature/cloudbuild'
 
 steps:
+  # 1. Step para exibir o nome da branch
   - id: 'branch name'
     name: 'alpine'
     args:
@@ -10,35 +11,42 @@ steps:
     - |
         echo "Branch name is: $BRANCH_NAME"
 
+  # 2. Step para inicializar o Terraform
   - id: 'tf init'
     name: 'hashicorp/terraform:1.0.0'
     args:
     - 'init'
 
+  # 3. Step para executar o Terraform plan
   - id: 'tf plan'
     name: 'hashicorp/terraform:1.0.0'
     args:
     - plan
 
+  # 4. Step para aplicar mudanças no Terraform
   - id: 'tf apply'
     name: 'hashicorp/terraform:1.0.0'
     args:
     - 'apply'
     - '--auto-approve'
 
-    ##
-    #    if [[ -z "$BRANCH_NAME" ]]; then
-    #      echo "Error: BRANCH_NAME is not defined."
-    #      exit 1
-    #    fi
-
-    #    if [[ "$BRANCH_NAME" == "feature/docs" ]]; then
-    #      echo "Branch is 'feature/docs', proceeding with terraform apply."
-    #      terraform apply --auto-approve
-    #    else
-    #      echo "Branch is not 'feature/docs', skipping terraform apply."
-    #   fi
-    #
+  # 5. Step para fazer commit e merge automático (somente se a branch for feature/docs)
+  - id: 'auto-merge'
+    name: 'alpine/git'
+    entrypoint: 'sh'
+    args:
+    - '-c'
+    - |
+        if [[ "$BRANCH_NAME" == "feature/cloudbuild" ]]; then
+          echo "Branch is 'feature/cloudbuild', proceeding with auto-merge."
+          git config --global user.email "henriquealcalde@hotmail.com"
+          git config --global user.name "Henrique"
+          git checkout develop
+          git merge "$BRANCH_NAME" --no-ff -m "Auto-merge from $BRANCH_NAME to develop"
+          git push origin develop
+        else
+          echo "Branch is not 'feature/docs', skipping auto-merge."
+        fi
 
 options:
   logging: CLOUD_LOGGING_ONLY
