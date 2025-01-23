@@ -1,41 +1,45 @@
+substitutions:
+  _BRANCH_NAME: 'feature/docs'
+
 steps:
   - id: 'branch name'
     name: 'alpine'
-    entrypoint: 'sh'
     args:
+    - sh
     - '-c'
     - |
-        echo "**********************"
-        echo "$BRANCH_NAME" 
-        echo "**********************"
+        echo "Branch name is: $BRANCH_NAME"
 
   - id: 'tf init'
     name: 'hashicorp/terraform:1.0.0'
-    entrypoint: 'sh'
     args:
+    - sh
     - '-c'
     - |
         terraform init
 
   - id: 'tf plan'
     name: 'hashicorp/terraform:1.0.0'
-    entrypoint: 'sh'
     args:
+    - sh
     - '-c'
     - |
         terraform plan
-    
+
   - id: 'tf apply'
     name: 'hashicorp/terraform:1.0.0'
-    entrypoint: 'sh'
     args:
+    - sh
     - '-c'
     - |
-        if [[ "$BRANCH_NAME" == "prod" ]]; then
-          echo "Branch is 'prod', proceeding with terraform apply."
+        if [[ -z "$BRANCH_NAME" ]]; then
+          echo "Error: BRANCH_NAME is not defined."
+          exit 1
+        fi
+
+        if [[ "$BRANCH_NAME" == "feature/docs" ]]; then
+          echo "Branch is 'feature/docs', proceeding with terraform apply."
           terraform apply --auto-approve
-          exit 0
         else
-          echo "Branch is not 'prod', skipping terraform apply."
-          exit 0
+          echo "Branch is not 'feature/docs', skipping terraform apply."
         fi

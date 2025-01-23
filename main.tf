@@ -1,6 +1,6 @@
 resource "google_storage_bucket" "auto-expire" {
   name          = "tt-cicdbuild-bucket"
-  location      = "US"
+  location      = "SA"
   project       = "TestesDevops"
   force_destroy = true
 
