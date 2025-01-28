@@ -1,4 +1,4 @@
-resource "google_storage_bucket-devosp-010203" "auto-expire" {
+resource "google_storage_bucket" "auto-expire" {
   name          = "tt-cicdbuild-bucket-010203"
   location      = "southamerica-east1"
   project       = "integracaohomologado"
